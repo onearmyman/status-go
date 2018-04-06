@@ -50,9 +50,9 @@ var (
 	version           = flag.Bool("version", false, "Print version")
 
 	listenAddr = flag.String("listenaddr", ":30303", "IP address and port of this node (e.g. 127.0.0.1:30303)")
-	standalone = flag.Bool("standalone", true, "Don't actively connect to peers, wait for incoming connections")
+	standalone = flag.Bool("standalone", false, "Don't actively connect to peers, wait for incoming connections")
 	bootnodes  = flag.String("bootnodes", "", "A list of bootnodes separated by comma")
-	discovery  = flag.Bool("discovery", false, "Enable discovery protocol")
+	discovery  = flag.Bool("discovery", true, "Enable discovery protocol")
 
 	// stats
 	statsEnabled = flag.Bool("stats", false, "Expose node stats via /debug/vars expvar endpoint or Prometheus")
@@ -277,9 +277,12 @@ func makeNodeConfig() (*params.NodeConfig, error) {
 	}
 
 	nodeConfig.Discovery = *discovery
-	nodeConfig.RequireTopics = map[discv5.Topic]params.Limits(searchTopics)
-	nodeConfig.RegisterTopics = []discv5.Topic(registerTopics)
-
+	if len(searchTopics) != 0 {
+		nodeConfig.RequireTopics = map[discv5.Topic]params.Limits(searchTopics)
+	}
+	if len(registerTopics) != 0 {
+		nodeConfig.RegisterTopics = []discv5.Topic(registerTopics)
+	}
 	// Even if standalone is true and discovery is disabled,
 	// it's possible to use bootnodes.
 	if *bootnodes != "" {

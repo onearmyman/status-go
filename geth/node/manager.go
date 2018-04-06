@@ -107,6 +107,10 @@ func (m *Manager) startNode(config *params.NodeConfig) error {
 		m.log.Error("Failed to create an RPC client", "error", err)
 		return RPCClientError(err)
 	}
+	if len(m.config.RequireTopics) == 0 && m.config.WhisperConfig.Enabled {
+		m.config.RequireTopics[params.DefaultWhisperPeerTopic] = params.DefaultWhisperPeerLimits
+	}
+
 	if ethNode.Server().DiscV5 != nil {
 		statusDB, err := db.CreateDatabase(filepath.Join(m.config.DataDir, params.StatusDatabase))
 		if err != nil {

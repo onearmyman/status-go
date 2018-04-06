@@ -1,5 +1,9 @@
 package params
 
+import (
+	"github.com/ethereum/go-ethereum/p2p/discv5"
+)
+
 const (
 	// ClientIdentifier is client identifier to advertise over the network
 	ClientIdentifier = "StatusIM"
@@ -105,4 +109,10 @@ const (
 
 	// StatusChainNetworkID is id of a test network (private chain)
 	StatusChainNetworkID = 777
+
+	DefaultWhisperPeerTopic = discv5.Topic("whisper")
+)
+
+var (
+	DefaultWhisperPeerLimits = Limits{2, 2}
 )

@@ -4,6 +4,7 @@ type subClusterData struct {
 	Number      int      `json:"number"`
 	Hash        string   `json:"hash"`
 	StaticNodes []string `json:"staticnodes"`
+	BootNodes   []string `json:"bootnodes"`
 }
 
 type clusterData struct {
@@ -14,14 +15,8 @@ type clusterData struct {
 
 var ropstenCluster = clusterData{
 	NetworkID: 3,
-	Prod: subClusterData{StaticNodes: []string{
-		"enode://dffef3874011709b12d1e540d83ddb19a9db8614ad9151d05bcf813585e45cbebba5aaea223fe315786c401d8cecb1ad2de9f179680c536ea30311fb21fa934b@188.166.100.178:30303",
-		"enode://03f3661686d30509d621dbe5ee2e3082923f25e94fd41a2dd8dd34bb12a0c4e8fbde52247c6c55e86dc209a8e7c4a5ae56058c65f7b01734d3ab73818b44e2a3@188.166.33.47:30303",
-	}},
-	Dev: subClusterData{StaticNodes: []string{
-		"enode://dffef3874011709b12d1e540d83ddb19a9db8614ad9151d05bcf813585e45cbebba5aaea223fe315786c401d8cecb1ad2de9f179680c536ea30311fb21fa934b@188.166.100.178:30303",
-		"enode://03f3661686d30509d621dbe5ee2e3082923f25e94fd41a2dd8dd34bb12a0c4e8fbde52247c6c55e86dc209a8e7c4a5ae56058c65f7b01734d3ab73818b44e2a3@188.166.33.47:30303",
-	}},
+	Prod:      subClusterData{BootNodes: []string{"enode://3f04db09bedc8d85a198de94c84da73aa7782fafc61b28c525ec5cca5a6cc16be7ebbb5cd001780f71d8408d35a2f6326faa1e524d9d8875294172ebec988743@128.199.61.97:30303"}},
+	Dev:       subClusterData{BootNodes: []string{"enode://3f04db09bedc8d85a198de94c84da73aa7782fafc61b28c525ec5cca5a6cc16be7ebbb5cd001780f71d8408d35a2f6326faa1e524d9d8875294172ebec988743@128.199.61.97:30303"}},
 }
 
 var rinkebyCluster = clusterData{

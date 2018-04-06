@@ -349,7 +349,9 @@ func NewNodeConfig(dataDir string, clstrCfgFile string, networkID uint64, devMod
 				NotificationTriggerURL: FirebaseNotificationTriggerURL,
 			},
 		},
-		SwarmConfig: &SwarmConfig{},
+		SwarmConfig:    &SwarmConfig{},
+		RegisterTopics: []discv5.Topic{},
+		RequireTopics:  map[discv5.Topic]Limits{},
 	}
 
 	// adjust dependent values
@@ -580,8 +582,10 @@ func (c *NodeConfig) updateClusterConfig() error {
 	for _, cluster := range clusters {
 		if cluster.NetworkID == int(c.NetworkID) {
 			c.ClusterConfig.StaticNodes = cluster.Prod.StaticNodes
+			c.ClusterConfig.BootNodes = cluster.Prod.BootNodes
 			if c.DevMode {
 				c.ClusterConfig.StaticNodes = cluster.Dev.StaticNodes
+				c.ClusterConfig.BootNodes = cluster.Dev.BootNodes
 			}
 			break
 		}
