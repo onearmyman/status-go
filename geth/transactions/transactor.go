@@ -41,6 +41,10 @@ type Transactor struct {
 	log        log.Logger
 }
 
+func unused() {
+	println("unused")
+}
+
 // NewTransactor returns a new Manager.
 func NewTransactor(signRequests *sign.PendingRequests) *Transactor {
 	return &Transactor{

@@ -5,7 +5,7 @@
         ".*Errors unhandled.*fmt.Fprint.*gasv2.*"
     ],
     "Skip": ["helpers", "static"],
-    "Vendor": true,
+    "Vendor": false,
     "Test": true,
     "Linters": {
         "gasv2": {
