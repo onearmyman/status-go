@@ -12,6 +12,7 @@ import (
 	"github.com/ethereum/go-ethereum/p2p"
 	"github.com/ethereum/go-ethereum/p2p/discover"
 	"github.com/ethereum/go-ethereum/p2p/discv5"
+	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 
 	"github.com/status-im/status-go/geth/params"
@@ -132,4 +133,23 @@ func (s *PeerPoolSimulationSuite) TearDown() {
 	for _, p := range s.peers {
 		p.Stop()
 	}
+}
+
+func TestMaxPeersOverflow(t *testing.T) {
+	key, err := crypto.GenerateKey()
+	require.NoError(t, err)
+	peer := &p2p.Server{
+		Config: p2p.Config{
+			PrivateKey:  key,
+			DiscoveryV5: true,
+			NoDiscovery: true,
+		},
+	}
+	require.NoError(t, peer.Start())
+	defer peer.Stop()
+	require.NotNil(t, peer.DiscV5)
+	pool := NewPeerPool(nil, DefaultFastSync, DefaultSlowSync, nil, true)
+	pool.handleAddedEvent(peer, &p2p.PeerEvent{})
+	require.Nil(t, peer.DiscV5)
+	pool.handleAddedEvent(peer, &p2p.PeerEvent{})
 }
